@@ -1,64 +1,78 @@
-const express = require('express');
-const cors = require('cors');
+const express = require("express");
+const cors = require("cors");
+const nodemailer = require("nodemailer");
+
+// --- Validation Function ---
+const isValidEmail = (email) => {
+    // A simple regex checks for format: local-part@domain.tld
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+};
+
 const app = express();
-const PORT = 5000;
 
-// =================================================================
-// 1. Middleware Setup
-// =================================================================
+const SENDER_EMAIL = "ynebebtibebu9@gmail.com";
+const GMAIL_PASS = "iibr uopq ymds dket"; 
 
-// CORS (Cross-Origin Resource Sharing) configuration.
-// It allows your frontend (which runs on a different port, e.g., 5174) 
-// to send requests to this backend (port 5000).
 app.use(cors());
-
-// Body parser middleware: enables the server to read incoming JSON data
-// (which is how the frontend sends the form data).
 app.use(express.json());
 
+// ==========================
+//  Nodemailer Configuration
+// ==========================
+const transporter = nodemailer.createTransport({
+    service: "gmail",
+    auth: {
+        user: SENDER_EMAIL,
+        pass: GMAIL_PASS
+    }
+});
 
-// =================================================================
-// 2. Contact Route Handler (POST /contact)
-// =================================================================
-
-app.post('/contact', (req, res) => {
+// ==========================
+//  Contact API - FIXED FOR AUTHENTICATION
+// ==========================
+app.post("/contact", async (req, res) => {
     const { name, email, message } = req.body;
 
-    // --- Basic Server-Side Validation ---
-    if (!name || !email || !message) {
-        // Sends a 400 Bad Request response if any field is missing
-        return res.status(400).json({ 
-            status: 'error', 
-            message: 'All fields are required (name, email, message).' 
+    // 1. EMAIL FORMAT VALIDATION: Check email structure
+    // This is necessary to stop poorly formatted emails from reaching Nodemailer
+    if (!isValidEmail(email)) {
+        return res.status(400).json({ // Return 400 Bad Request
+            status: "error",
+            message: "Invalid email format. Please check your email address."
         });
     }
 
-    // ===============================================================
-    // REAL WORLD ACTION: This is where you would call an email 
-    // sending library (like Nodemailer) or save the message 
-    // to a database (like MongoDB or PostgreSQL).
-    // ===============================================================
-    
-    // For now, we simulate success by logging the data to the server console.
-    console.log('--- NEW CONTACT MESSAGE RECEIVED ---');
-    console.log(`Name: ${name}`);
-    console.log(`Email: ${email}`);
-    console.log(`Message: ${message}`);
-    console.log('------------------------------------');
+    try {
+        await transporter.sendMail({
+            // FIX: Set the FROM address to the authenticated account (SENDER_EMAIL)
+            // This prevents Nodemailer from failing on invalid 'from' emails.
+            from: `"${name}" <${SENDER_EMAIL}>`,
+            
+            // NEW: Add the user's email to replyTo for easy response
+            replyTo: email, 
+            
+            to: SENDER_EMAIL,
+            subject: `Portfolio Message from ${name} (Reply-to: ${email})`,
+            text: `Name: ${name}\nEmail: ${email}\nMessage: ${message}`
+        });
 
-    // Send a successful response back to the frontend
-    res.status(200).json({ 
-        status: 'success', 
-        message: 'Message received and processed successfully!' 
-    });
+        return res.status(200).json({ status: "success" });
+
+    } catch (err) {
+        console.error("Email Sending Error:", err);
+        return res.status(500).json({
+            status: "error",
+            message: "Email sending failed due to server configuration or network issue.",
+            error: err.toString()
+        });
+    }
 });
 
 
-// =================================================================
-// 3. Server Start
-// =================================================================
-
-app.listen(PORT, () => {
-    console.log(`\n✅ Portfolio Backend API listening at http://localhost:${PORT}`);
-    console.log('----------------------------------------------------');
+// ==========================
+// Start Server
+// ==========================
+app.listen(5000, () => {
+    console.log("\n✅ Backend running at http://localhost:5000");
 });

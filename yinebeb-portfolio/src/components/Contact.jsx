@@ -7,73 +7,116 @@ const Contact = () => {
         message: ''
     });
 
+    const [statusMessage, setStatusMessage] = useState(null);  // UI message
+    const [messageType, setMessageType] = useState("");        // success or error
+
+    // Handle input
     const handleChange = (e) => {
-        const { placeholder, value } = e.target;
-        // Map the placeholder text to the state keys
-        let key;
-        if (placeholder === 'Your Name') key = 'name';
-        else if (placeholder === 'Your Email') key = 'email';
-        else if (placeholder === 'Your Message') key = 'message';
-        
-        setFormData(prev => ({ ...prev, [key]: value }));
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    // Submit form
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        
-        // **IMPORTANT:** You'll need to implement actual backend submission logic here.
-        // For example, using the Fetch API to send data to a serverless function or an email service.
-        console.log('Form Submitted:', formData); 
 
-        alert('Message sent successfully (simulated)! Check console for data.');
+        try {
+            const res = await fetch("http://localhost:5000/contact", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(formData)
+            });
 
-        // Optionally clear the form
-        setFormData({ name: '', email: '', message: '' });
+            const data = await res.json();
+
+            if (data.status === "success") {
+                setMessageType("success");
+                setStatusMessage("Message sent successfully!");
+
+                setFormData({ name: "", email: "", message: "" });
+            } else {
+                setMessageType("error");
+                setStatusMessage("Failed to send message. Please try again.");
+            }
+
+        } catch (error) {
+            setMessageType("error");
+            setStatusMessage("Server error! Make sure backend is running.");
+        }
+
+        // Hide message after 4 seconds
+        setTimeout(() => setStatusMessage(null), 4000);
     };
 
     return (
         <section className="contact active" id="contact">
             <h2 className="heading">Contact <span>Me</span></h2>
+
+            {/* ====================== 
+                UI SUCCESS / ERROR MESSAGE
+            ========================= */}
+            {statusMessage && (
+                <div className={`ui-message ${messageType}`}>
+                    {statusMessage}
+                </div>
+            )}
+
             <div className="contact-container">
+
                 <div className="contact-info">
-                    {/* ... (Your info-box divs remain the same) ... */}
                     <div className="info-box">
                         <i className='bx bx-envelope'></i>
-                        <div><h4>Email</h4><p>yinebebtibebu9@gmail.com</p></div>
+                        <div>
+                            <h4>Email</h4>
+                            <p>yinebebtibebu9@gmail.com</p>
+                        </div>
                     </div>
+
                     <div className="info-box">
                         <i className='bx bx-phone'></i>
-                        <div><h4>Phone</h4><p>+251 928763013</p></div>
+                        <div>
+                            <h4>Phone</h4>
+                            <p>+251 928763013</p>
+                        </div>
                     </div>
+
                     <div className="info-box">
                         <i className='bx bx-map'></i>
-                        <div><h4>Location</h4><p>KIOT, Kombolcha, Ethiopia</p></div>
+                        <div>
+                            <h4>Location</h4>
+                            <p>KIOT, Kombolcha, Ethiopia</p>
+                        </div>
                     </div>
                 </div>
-                
-                {/* The form now uses the handleSubmit function */}
+
                 <form className="contact-form" onSubmit={handleSubmit}>
-                    <input 
-                        type="text" 
-                        placeholder="Your Name" 
-                        required 
+                    <input
+                        type="text"
+                        name="name"
+                        placeholder="Your Name"
+                        required
                         value={formData.name}
                         onChange={handleChange}
                     />
-                    <input 
-                        type="email" 
-                        placeholder="Your Email" 
-                        required 
+
+                    <input
+                        type="email"
+                        name="email"
+                        placeholder="Your Email"
+                        required
                         value={formData.email}
                         onChange={handleChange}
                     />
-                    <textarea 
-                        rows="6" 
-                        placeholder="Your Message" 
+
+                    <textarea
+                        name="message"
+                        rows="6"
+                        placeholder="Your Message"
                         required
                         value={formData.message}
                         onChange={handleChange}
                     ></textarea>
+
                     <button type="submit" className="btn">Send Message</button>
                 </form>
             </div>
