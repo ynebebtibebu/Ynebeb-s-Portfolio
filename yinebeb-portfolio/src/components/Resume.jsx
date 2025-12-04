@@ -2,20 +2,23 @@ import React from 'react';
 
 // You could extract this data into a separate file for a cleaner structure
 const educationData = [
-    { title: "BSc in Software Engineering", details: "Wollo University, KIOT campuss, 2019 - 2023", small: "Learned full-stack development, algorithms, databases, and agile methodologies." },
-    { title: "Web Development Bootcamp", details: "Online, 2022", small: "Completed intensive training in HTML, CSS, JavaScript, and Python." }
+    { title: "BSc in Software Engineering", details: "Wollo University, KIOT campuss, 2021 - 2026", small: "Learned full-stack development, algorithms, databases, and agile methodologies." },
+    { title: "Web Development Bootcamp", details: "Online, 2026", small: "Completed intensive training in HTML, CSS, JavaScript, and Python." }
 ];
 
 const experienceData = [
-    { title: "Frontend Developer - Freelance", details: "2023 - Present", small: "Built responsive websites for small businesses using React and Tailwind CSS." },
+    { title: "Frontend Developer - Freelance", details: "2025 - Present", small: "Built responsive websites for small businesses using React and Tailwind CSS." },
     { title: "Intern Software Developer", details: "XYZ Tech, Summer 2022", small: "Worked on internal tools using Python, Flask, and PostgreSQL." }
 ];
 
 const skillsData = [
     { name: "HTML / CSS", percentage: "95%" },
-    { name: "JavaScript", percentage: "40%" },
-    { name: "Python", percentage: "90%" },
-    { name: "Flutter / Kotlin", percentage: "50%" }
+    { name: "JavaScript", percentage: "95%" },
+    { name: "Python", percentage: "93%" },
+    { name: "Flutter / Kotlin", percentage: "85%" },
+    { name: "Node.js ", percentage: "95%" },
+    { name: "React  ", percentage: "96%" },
+    { name: "Tailwan  ", percentage: "91%" }
 ];
 
 const Resume = () => {

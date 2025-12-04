@@ -13,8 +13,15 @@ const app = express();
 
 const SENDER_EMAIL = "ynebebtibebu9@gmail.com";
 const GMAIL_PASS = "iibr uopq ymds dket"; 
-
-app.use(cors());
+app.use(
+    cors({
+        origin: [
+            "https://ynebeb-s-portfolio-ashy.vercel.app",
+            "http://localhost:5173"
+        ],
+        methods: ["POST"]
+    })
+);
 app.use(express.json());
 
 // ==========================
