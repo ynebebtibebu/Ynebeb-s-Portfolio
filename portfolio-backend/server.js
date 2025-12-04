@@ -11,8 +11,8 @@ const isValidEmail = (email) => {
 
 const app = express();
 
-const SENDER_EMAIL = "ynebebtibebu9@gmail.com";
-const GMAIL_PASS = "iibr uopq ymds dket"; 
+const SENDER_EMAIL = process.env.SENDER_EMAIL;
+const GMAIL_PASS = process.env.GMAIL_PASS;
 app.use(
     cors({
         origin: [
@@ -25,7 +25,7 @@ app.use(
 app.use(express.json());
 
 // ==========================
-//  Nodemailer Configuration
+//  Nodemailer Configuration upyo slyf seby nsf
 // ==========================
 const transporter = nodemailer.createTransport({
     service: "gmail",
