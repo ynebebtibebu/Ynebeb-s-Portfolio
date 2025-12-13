@@ -1,6 +1,6 @@
 import React from 'react';
 // 1. Import the image file for Vite/Webpack to correctly bundle the path
-import profileImage from '../assets/images/photo2.jpg'; 
+import profileImage from '../assets/images/photo.jpg'; 
 
 const Home = () => {
     // Array of roles is optional here, as the rotation is handled by CSS/JS animation
@@ -15,7 +15,8 @@ const Home = () => {
                     I'm a{' '}
                     {/* The inline styles will be kept, but in a real React app, you'd use a CSS class for animations */}
                     <span style={{ '--i': 2 }} data-text="Software Engineer">Software Engineer</span>
-                    <span style={{ '--i': 1 }} data-text="Coder">Coder</span> 
+                    <span style={{ '--i': 1 }} data-text="Fullstack Developer">Fullstack Developer</span> 
+                    
                 </h2>
                 <p>
                     Welcome to my portfolio! I'm passionate about coding and building awesome projects.

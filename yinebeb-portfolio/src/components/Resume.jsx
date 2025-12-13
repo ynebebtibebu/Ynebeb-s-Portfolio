@@ -14,7 +14,7 @@ const experienceData = [
 const skillsData = [
     { name: "HTML / CSS", percentage: "95%" },
     { name: "JavaScript", percentage: "95%" },
-    { name: "Python", percentage: "93%" },
+    { name: "Python / Django & Flask", percentage: "93%" },
     { name: "Flutter / Kotlin", percentage: "85%" },
     { name: "Node.js ", percentage: "95%" },
     { name: "React  ", percentage: "96%" },
