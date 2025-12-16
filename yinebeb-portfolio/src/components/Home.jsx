@@ -23,10 +23,9 @@ const Home = () => {
                 </p>
 
                 <div className="btn-sci">
-                    {/* ✅ WORKING DOWNLOAD BUTTON */}
                     <a
-                        href="/cv/Yinebeb_CV.pdf"
-                        download
+                        href="/cv/Yinebeb_CV.pdf?v=2"
+                        download="Yinebeb_CV.pdf"
                         className="btn"
                     >
                         Download CV
