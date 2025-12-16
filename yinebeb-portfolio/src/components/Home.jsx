@@ -1,8 +1,13 @@
 import React from 'react';
-// Import the image so Vite/Webpack bundles it correctly
 import profileImage from '../assets/images/photo5.jpg';
 
 const Home = () => {
+
+    const handleDownloadCV = () => {
+        // Force a real browser navigation (bypasses SPA + cache issues)
+        window.location.href = '/cv/Yinebeb_CV.pdf';
+    };
+
     return (
         <section className="home active" id="home">
             <div className="home-detail">
@@ -23,13 +28,14 @@ const Home = () => {
                 </p>
 
                 <div className="btn-sci">
-                    <a
-                        href="/cv/Yinebeb_CV.pdf?v=2"
-                        download="Yinebeb_CV.pdf"
+                    {/* ✅ VERCEL-PROOF DOWNLOAD BUTTON */}
+                    <button
+                        type="button"
                         className="btn"
+                        onClick={handleDownloadCV}
                     >
                         Download CV
-                    </a>
+                    </button>
 
                     <div className="sci">
                         <a
